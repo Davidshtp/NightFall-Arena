@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv8xw7hw8ey2x"]
+
+[ext_resource type="Script" uid="uid://d1fi8pdp5c68v" path="res://scenes/projectiles/bullet.gd" id="1_yvfy2"]
+
+[sub_resource type="Gradient" id="Gradient_5l6ky"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yvfy2"]
+gradient = SubResource("Gradient_5l6ky")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_48g2p"]
+radius = 6.0
+
+[node name="Bullet" type="Area2D"]
+script = ExtResource("1_yvfy2")
+speed = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = SubResource("GradientTexture2D_yvfy2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_48g2p")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
