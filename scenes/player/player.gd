@@ -6,110 +6,160 @@ extends CharacterBody2D
 @export var fire_rate: float = 0.5
 @export var bullet_scene: PackedScene
 @export var max_health: int = 100
+@export var game_over_scene: PackedScene
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+var health_bar
 var last_direction: Vector2 = Vector2.RIGHT
 var current_health: int
-var can_take_damage: bool = true # Para implementar invulnerabilidad temporal (i-frames)
+var can_take_damage: bool = true
+var is_dead: bool = false
+
+var survival_time: float = 0.0
+var kill_count: int = 0
 
 func _ready():
 	current_health = max_health
+	is_dead = false
+	can_take_damage = true
+	survival_time = 0.0
+	kill_count = 0
+	
+	set_physics_process(true)
+	set_process(true)
+	
 	animated_sprite.play("idle")
+	
+	if not is_in_group("player"):
+		add_to_group("player")
+	
+	create_health_bar()
+
+func _process(delta):
+	if not is_dead:
+		survival_time += delta
 
 func _physics_process(_delta):
-	# Obtener input del jugador
+	if is_dead:
+		return
+		
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_axis("ui_left", "ui_right")
 	input_vector.y = Input.get_axis("ui_up", "ui_down")
 	
-	# Normalizar para evitar movimiento diagonal más rápido
 	if input_vector.length() > 0:
 		input_vector = input_vector.normalized()
 		last_direction = input_vector
 	
-	# Aplicar velocidad
 	velocity = input_vector * speed
 	
-	# Manejar animaciones de movimiento
 	if velocity.length() > 0:
 		animated_sprite.play("run")
-		# Voltear sprite según dirección
 		if velocity.x > 0:
 			animated_sprite.flip_h = false
 		elif velocity.x < 0:
 			animated_sprite.flip_h = true
 	else:
-		# Solo volver a idle si no está en animación de daño
 		if animated_sprite.animation != "receivedamage":
 			animated_sprite.play("idle")
 	
-	# Mover el jugador
 	move_and_slide()
 
-# Función de ataque del jugador
 func _on_fire_timer_timeout():
-	if bullet_scene == null:
+	if bullet_scene == null or is_dead:
 		return
 	
-	# Calcular dirección hacia el cursor
 	var mouse_pos = get_global_mouse_position()
 	var shoot_direction = (mouse_pos - global_position).normalized()
 	
-	# Disparar la bala hacia el cursor
 	var bullet = bullet_scene.instantiate()
 	get_parent().add_child(bullet)
 	bullet.global_position = global_position
 	bullet.set_direction(shoot_direction)
 
-# Función llamada por los enemigos al colisionar
 func take_damage(amount: int):
-	if not can_take_damage:
+	if not can_take_damage or is_dead:
 		return
 		
 	current_health -= amount
-	print("Player HP: ", current_health)
+	current_health = max(0, current_health)
+	
+	if health_bar:
+		health_bar.update_health(current_health, max_health)
+	
+	print("Player HP: ", current_health, "/", max_health)
 	
 	if current_health <= 0:
 		die()
 	else:
-		# 1. Iniciar invulnerabilidad temporal
 		can_take_damage = false
-		$TimerIFrames.start() 
+		if has_node("TimerIFrames"):
+			$TimerIFrames.start()
+		else:
+			var timer = get_tree().create_timer(1.0)
+			timer.timeout.connect(func(): can_take_damage = true)
 		
-		# 2. Ejecutar animación de daño
 		if animated_sprite.sprite_frames.has_animation("receivedamage"):
 			animated_sprite.play("receivedamage")
-			# El _physics_process se encargará de volver a la animación correcta
 
-# Conectada a la señal body_entered del nodo Hurtbox
 func _on_hurtbox_body_entered(body):
-	# Aseguramos que solo reaccione a los enemigos
-	if body.is_in_group("enemy"):
-		# Llamamos a la función de daño, usando la variable de daño del enemigo
+	if body.is_in_group("enemy") and not is_dead:
 		take_damage(body.damage)
-	
-# Conectada a la señal timeout del nodo TimerIFrames
+
 func _on_timer_i_frames_timeout():
-	# Después del tiempo, el jugador puede volver a recibir daño
 	can_take_damage = true
-	# No hace falta detener animación, _physics_process lo maneja.
 
 func die():
-	print("Player died!")
-	# Detener movimiento y procesamiento
-	set_physics_process(false)
-	velocity = Vector2.ZERO
+	if is_dead:
+		return
 	
-	# 1. Ejecutar animación de muerte si existe
+	is_dead = true
+	print("Player died! Showing Game Over...")
+	
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+	
 	if animated_sprite.sprite_frames.has_animation("die"):
 		animated_sprite.play("die")
 		await animated_sprite.animation_finished
 	else:
-		# Si no hay animación, mostrar idle y esperar un momento
-		animated_sprite.play("idle")
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(0.5).timeout
 	
-	# 2. Detener el juego, mostrar Game Over, etc.
-	print("Game Over!")
-	get_tree().paused = true
-	# queue_free() # Opcional: descomentar si quieres destruir al jugador
+	show_game_over()
+
+func show_game_over():
+	print("Calling show_game_over()...")
+	
+	if game_over_scene == null:
+		print("ERROR: game_over_scene not assigned in inspector!")
+		print("Trying to load GameOver.tscn manually...")
+		game_over_scene = load("res://scenes/ui/GameOver.tscn")
+		if game_over_scene == null:
+			print("ERROR: Could not load GameOver.tscn")
+			return
+	
+	var game_over = game_over_scene.instantiate()
+	
+	print("Adding Game Over to scene tree...")
+	get_tree().root.add_child(game_over)
+	
+	await get_tree().process_frame
+	
+	if game_over.has_method("set_stats"):
+		game_over.set_stats(survival_time, kill_count)
+		print("Stats sent: Time=", survival_time, ", Kills=", kill_count)
+	
+	print("Game Over added successfully!")
+
+func add_kill():
+	kill_count += 1
+	print("Kills: ", kill_count)
+
+func create_health_bar():
+	var health_bar_script = load("res://scenes/player/simple_health_bar.gd")
+	if health_bar_script:
+		health_bar = Node2D.new()
+		health_bar.set_script(health_bar_script)
+		health_bar.max_health = max_health
+		add_child(health_bar)
+		health_bar.update_health(current_health, max_health)

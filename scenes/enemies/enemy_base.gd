@@ -65,6 +65,10 @@ func die():
 	is_dying = true
 	print("Enemigo murió!")
 	
+	# Notificar al jugador sobre el kill
+	if player and player.has_method("add_kill"):
+		player.add_kill()
+	
 	# 1. Deshabilitar colisiones y movimiento
 	set_collision_mask_value(1, false) 
 	set_collision_layer_value(1, false) 
