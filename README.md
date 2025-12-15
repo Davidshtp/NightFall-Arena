@@ -15,7 +15,7 @@ Arena Survivor con mecánicas twin-stick shooter, combate dinámico y progresió
 
 ---
 
-## 🎯 Estado del Parcial: **70% COMPLETO** ✅
+## 🎯 Estado del Parcial: **85% COMPLETO** ✅
 
 ### ✅ Core Gameplay Funcional
 El juego cuenta con todas las mecánicas fundamentales implementadas y balanceadas.
@@ -98,15 +98,23 @@ Hurtbox:    layer=2, mask=4 (detecta enemigos para daño)
 - ✅ Sistema basado en Timer
 - ✅ Variedad de tipos instanciados
 
+### 7️⃣ Sistema de UI/HUD
+- ✅ **HUD en tiempo real** con información del jugador:
+  - 💚 **HP**: Muestra vida actual/máxima (ej: HP: 88/100)
+  - 💀 **Kills**: Contador de enemigos eliminados
+  - ⏱️ **Time**: Tiempo de supervivencia (formato MM:SS)
+- ✅ **Barra de vida del jugador** flotante encima del personaje
+- ✅ **Barras de vida de enemigos** - Cada enemigo muestra su HP encima
+- ✅ **Pantalla Game Over** con botones:
+  - 🔄 **Retry**: Reiniciar partida
+  - 🚪 **Quit**: Salir del juego
+
 ---
 
-## 🔜 Pendientes (30%)
+## 🔜 Pendientes (15%)
 
 ### UI/HUD
-- ❌ Barra de vida visible
-- ❌ Contador de kills/score
 - ❌ Menú principal
-- ❌ Game Over screen con UI
 - ❌ Menú de pausa
 
 ### Sistemas Avanzados
@@ -138,12 +146,18 @@ nightfall-arena/
 │   ├── enemies/
 │   │   ├── EnemyBase.tscn
 │   │   ├── enemy_base.gd
+│   │   ├── enemy_health_bar.gd
 │   │   ├── WhiteSkeleton.tscn
 │   │   ├── GoldenSkeleton.tscn
 │   │   └── WarriorBoss.tscn
 │   ├── projectiles/
 │   │   ├── bullet.tscn
 │   │   └── bullet.gd
+│   ├── ui/
+│   │   ├── HUD.tscn
+│   │   ├── hud.gd
+│   │   ├── GameOver.tscn
+│   │   └── game_over.gd
 │   └── enemy_spawner.gd
 │
 └── README.md
@@ -165,6 +179,9 @@ nightfall-arena/
 | **Animaciones** | ✅ | Completas para todos los personajes |
 | **Mapa/Arena** | ✅ | Tilemap completo |
 | **Balanceo** | ✅ | Stats calibrados |
+| **HUD** | ✅ | HP, Kills, Time en pantalla |
+| **Barras de Vida** | ✅ | Jugador y enemigos |
+| **Game Over** | ✅ | Pantalla con Retry/Quit |
 
 ---
 
@@ -233,9 +250,19 @@ ENEMIES:
 
 ## 📝 Changelog
 
-### Última Actualización: 14/12/2025
+### Última Actualización: 15/12/2025
 
 **Funcionalidades Nuevas:**
+- ✅ **Sistema de HUD completo:**
+  - HP del jugador (texto)
+  - Contador de Kills
+  - Timer de supervivencia
+- ✅ **Barras de vida flotantes:**
+  - Barra de vida del jugador encima del personaje
+  - Barras de vida para todos los enemigos
+- ✅ **Pantalla de Game Over:**
+  - Botón Retry para reiniciar
+  - Botón Quit para salir
 - ✅ Twin-stick shooter (disparo con mouse)
 - ✅ Mapa con tileset completo
 - ✅ Balanceo completo de 4 enemigos
@@ -249,6 +276,7 @@ ENEMIES:
 - ✅ Enemigos no se empujan entre sí
 - ✅ Player inmune a sus proyectiles
 - ✅ Duración de animación de muerte boss (1.5s)
+- ✅ Botones de Game Over funcionando correctamente
 
 ---
 
