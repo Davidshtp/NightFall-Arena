@@ -9,6 +9,7 @@ extends CharacterBody2D
 
 var current_health: int
 var player: Node2D
+var health_bar: Node2D  # Barra de vida del enemigo
 var is_dying: bool = false # ¡Nueva variable para controlar el estado!
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -19,6 +20,9 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	if animated_sprite != null:
 		animated_sprite.play("idle")
+	
+	# Crear barra de vida
+	create_health_bar()
 
 func _physics_process(_delta):
 	# NO hacer nada si está muriendo
@@ -53,6 +57,10 @@ func take_damage(amount: int = 1):
 	current_health -= amount
 	print("Vida restante del enemigo: ", current_health)
 	
+	# Actualizar barra de vida
+	if health_bar:
+		health_bar.update_health(current_health, max_health)
+	
 	if current_health <= 0:
 		die()
 	else:
@@ -64,6 +72,10 @@ func take_damage(amount: int = 1):
 func die():
 	is_dying = true
 	print("Enemigo murió!")
+	
+	# Ocultar barra de vida
+	if health_bar:
+		health_bar.visible = false
 	
 	# Notificar al jugador sobre el kill
 	if player and player.has_method("add_kill"):
@@ -83,6 +95,15 @@ func die():
 	
 	# 4. Destruir el enemigo
 	queue_free()
+
+func create_health_bar():
+	var health_bar_script = load("res://scenes/enemies/enemy_health_bar.gd")
+	if health_bar_script:
+		health_bar = Node2D.new()
+		health_bar.set_script(health_bar_script)
+		health_bar.z_index = 100
+		add_child(health_bar)
+		health_bar.update_health(current_health, max_health)
 
 func _on_spawn_timer_timeout() -> void:
 	pass # Replace with function body.

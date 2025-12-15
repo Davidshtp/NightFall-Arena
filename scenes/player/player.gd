@@ -10,6 +10,7 @@ extends CharacterBody2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 var health_bar
+var hud: Node  # Referencia al HUD
 var last_direction: Vector2 = Vector2.RIGHT
 var current_health: int
 var can_take_damage: bool = true
@@ -34,10 +35,18 @@ func _ready():
 		add_to_group("player")
 	
 	create_health_bar()
+	
+	# Buscar el HUD en la escena
+	hud = get_tree().get_first_node_in_group("hud")
+	if hud and hud.has_method("update_health"):
+		hud.update_health(current_health, max_health)
 
 func _process(delta):
 	if not is_dead:
 		survival_time += delta
+		# Actualizar el timer en el HUD
+		if hud and hud.has_method("update_time"):
+			hud.update_time(survival_time)
 
 func _physics_process(_delta):
 	if is_dead:
@@ -86,6 +95,10 @@ func take_damage(amount: int):
 	
 	if health_bar:
 		health_bar.update_health(current_health, max_health)
+	
+	# Actualizar el HUD
+	if hud and hud.has_method("update_health"):
+		hud.update_health(current_health, max_health)
 	
 	print("Player HP: ", current_health, "/", max_health)
 	
@@ -154,6 +167,9 @@ func show_game_over():
 func add_kill():
 	kill_count += 1
 	print("Kills: ", kill_count)
+	# Actualizar el HUD
+	if hud and hud.has_method("update_kills"):
+		hud.update_kills(kill_count)
 
 func create_health_bar():
 	var health_bar_script = load("res://scenes/player/simple_health_bar.gd")
