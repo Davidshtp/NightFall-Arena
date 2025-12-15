@@ -2,6 +2,7 @@
 
 extends Area2D
 
+@export var damage_amount: int = 5 # <--- ¡Nuevo! Daño base de la bala
 @export var speed: float = 600.0
 var direction: Vector2 = Vector2.ZERO
 
@@ -20,8 +21,8 @@ func _on_body_entered(body):
 	# 'body' es el nodo con el que la bala ha chocado.
 	# Verificamos si ese nodo pertenece al grupo "enemy".
 	if body.is_in_group("enemy"):
-		# Llamamos a la función de daño del enemigo
-		body.take_damage() 
+		# Llamamos a take_damage y le pasamos la cantidad de daño
+		body.take_damage(damage_amount)
 		
 		# Eliminamos la bala de la escena (solo puede golpear una vez)
 		queue_free()

@@ -207,7 +207,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_17xvc")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 7.8
 }, {
@@ -291,17 +291,23 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ifgcn"]
-size = Vector2(198, 418)
+size = Vector2(15, 26)
 
 [node name="EnemyBase" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_ifgcn")
+max_health = 25
+speed = 60.0
+damage = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(16, 16)
+position = Vector2(-1, 0)
+scale = Vector2(1.084375, 1.053125)
 sprite_frames = SubResource("SpriteFrames_ifgcn")
 animation = &"attack"
 frame_progress = 0.54266083
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(13, 38)
+position = Vector2(-0.5, 2)
 shape = SubResource("RectangleShape2D_ifgcn")

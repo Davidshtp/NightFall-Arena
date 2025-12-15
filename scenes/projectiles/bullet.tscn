@@ -3,19 +3,26 @@
 [ext_resource type="Script" uid="uid://d1fi8pdp5c68v" path="res://scenes/projectiles/bullet.gd" id="1_yvfy2"]
 
 [sub_resource type="Gradient" id="Gradient_5l6ky"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 0.8, 1, 1, 0.4, 0, 1, 1, 0.2, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_yvfy2"]
 gradient = SubResource("Gradient_5l6ky")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_48g2p"]
-radius = 6.0
+radius = 3.0
 
 [node name="Bullet" type="Area2D"]
+collision_layer = 8
+collision_mask = 4
 script = ExtResource("1_yvfy2")
-speed = null
+damage_amount = 15
+speed = 170.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.15, 0.15)
 texture = SubResource("GradientTexture2D_yvfy2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
