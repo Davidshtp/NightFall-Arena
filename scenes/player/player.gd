@@ -36,10 +36,17 @@ func _ready():
 	
 	create_health_bar()
 	
-	# Buscar el HUD en la escena
+	# Buscar el HUD después de que todos los nodos estén listos
+	call_deferred("find_hud")
+
+func find_hud():
 	hud = get_tree().get_first_node_in_group("hud")
-	if hud and hud.has_method("update_health"):
-		hud.update_health(current_health, max_health)
+	if hud:
+		print("✅ HUD encontrado!")
+		if hud.has_method("update_health"):
+			hud.update_health(current_health, max_health)
+	else:
+		print("❌ ERROR: HUD no encontrado en el grupo 'hud'")
 
 func _process(delta):
 	if not is_dead:

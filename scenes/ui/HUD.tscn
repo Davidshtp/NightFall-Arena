@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c8vx7qm2yjwkd"]
 
-[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud_script"]
+[ext_resource type="Script" uid="uid://bbhcdju8hd82a" path="res://scenes/ui/hud.gd" id="1_hud_script"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
@@ -35,13 +35,6 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
 text = "HP: 100/100"
-
-[node name="HealthBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/HealthContainer"]
-custom_minimum_size = Vector2(200, 25)
-layout_mode = 2
-max_value = 100.0
-value = 100.0
-show_percentage = false
 
 [node name="KillsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

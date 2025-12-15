@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d4ivtsus32bo2"]
+[gd_scene load_steps=12 format=3 uid="uid://d4ivtsus32bo2"]
 
 [ext_resource type="Texture2D" uid="uid://dqpuuuev6lqtj" path="res://assets/tileset/dark_times_tileset.png" id="1_18nlu"]
 [ext_resource type="PackedScene" uid="uid://disvu4xntu085" path="res://scenes/enemies/WarriorBoss.tscn" id="1_rt2n2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bed82i85t7od1" path="res://scenes/enemy_spawner.gd" id="5_18nlu"]
 [ext_resource type="PackedScene" uid="uid://dkgsn547cknnt" path="res://scenes/enemies/GoldenSkeleton.tscn" id="5_c16ls"]
 [ext_resource type="PackedScene" uid="uid://53vtnbo0800w" path="res://scenes/enemies/WhiteSkeleton.tscn" id="6_18nlu"]
+[ext_resource type="PackedScene" uid="uid://c8vx7qm2yjwkd" path="res://scenes/ui/HUD.tscn" id="9_c1pb6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c1pb6"]
 texture = ExtResource("1_18nlu")
@@ -95,5 +96,7 @@ enemy_scenes = Array[PackedScene]([ExtResource("3_7ykc4"), ExtResource("5_c16ls"
 [node name="SpawnTimer" type="Timer" parent="EnemySpawner"]
 wait_time = 2.0
 autostart = true
+
+[node name="HUD" parent="." instance=ExtResource("9_c1pb6")]
 
 [connection signal="timeout" from="EnemySpawner/SpawnTimer" to="EnemySpawner" method="_on_spawn_timer_timeout"]

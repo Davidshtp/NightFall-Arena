@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b8qxk7r3yw5p3"]
 
-[ext_resource type="Script" path="res://scenes/ui/game_over.gd" id="1_game_over"]
+[ext_resource type="Script" uid="uid://1dgskvv22a4n" path="res://scenes/ui/game_over.gd" id="1_game_over"]
 
 [sub_resource type="Animation" id="Animation_fade_in"]
 resource_name = "fade_in"
@@ -32,20 +32,12 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1"]
 _data = {
-"fade_in": SubResource("Animation_fade_in")
+&"fade_in": SubResource("Animation_fade_in")
 }
 
 [node name="GameOver" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_game_over")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.7)
 
 [node name="Panel" type="Panel" parent="."]
 process_mode = 3
@@ -112,7 +104,6 @@ process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-focus_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.2, 0.8, 0.2, 1)
 theme_override_font_sizes/font_size = 24
@@ -123,7 +114,6 @@ process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
-focus_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_font_sizes/font_size = 24
@@ -135,5 +125,5 @@ theme_override_constants/margin_bottom = 30
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_1")
+&"": SubResource("AnimationLibrary_1")
 }

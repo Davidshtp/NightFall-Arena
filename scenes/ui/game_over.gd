@@ -11,7 +11,24 @@ var animation_player: AnimationPlayer
 var survival_time: float = 0.0
 var total_kills: int = 0
 
+func _input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == 1:
+		print("🖱️ CLIC DETECTADO en Game Over!")
+		print("  Posición: ", event.position)
+		
+		# Verificar si el clic está sobre el botón Retry
+		if retry_button and retry_button.get_global_rect().has_point(event.position):
+			print("  ✅ Clic en RETRY BUTTON!")
+			_on_retry_pressed()
+			get_viewport().set_input_as_handled()
+		# Verificar si el clic está sobre el botón Quit
+		elif quit_button and quit_button.get_global_rect().has_point(event.position):
+			print("  ✅ Clic en QUIT BUTTON!")
+			_on_quit_pressed()
+			get_viewport().set_input_as_handled()
+
 func _ready():
+	print("🎮 GameOver _ready() iniciado")
 	get_tree().paused = true
 	
 	survival_time_label = $Panel/VBoxContainer/StatsContainer/SurvivalTimeLabel
@@ -20,10 +37,25 @@ func _ready():
 	quit_button = $Panel/VBoxContainer/ButtonsContainer/QuitButton
 	animation_player = $AnimationPlayer
 	
+	print("📊 Nodos encontrados:")
+	print("  - survival_time_label: ", survival_time_label != null)
+	print("  - kills_label: ", kills_label != null)
+	print("  - retry_button: ", retry_button != null)
+	print("  - quit_button: ", quit_button != null)
+	
 	update_stats()
 	
-	retry_button.pressed.connect(_on_retry_pressed)
-	quit_button.pressed.connect(_on_quit_pressed)
+	if retry_button:
+		retry_button.pressed.connect(_on_retry_pressed)
+		print("✅ Retry button conectado")
+	else:
+		print("❌ ERROR: retry_button es null")
+	
+	if quit_button:
+		quit_button.pressed.connect(_on_quit_pressed)
+		print("✅ Quit button conectado")
+	else:
+		print("❌ ERROR: quit_button es null")
 	
 	if animation_player:
 		animation_player.play("fade_in")
@@ -45,14 +77,19 @@ func update_stats():
 	kills_label.text = "Enemigos eliminados: %d" % total_kills
 
 func _on_retry_pressed():
-	print("Retry button pressed!")
+	print("🔄 RETRY BUTTON CLICKED!")
+	print("  1. Despausando juego...")
 	get_tree().paused = false
-	var scene_path = get_tree().current_scene.scene_file_path
+	print("  2. Eliminando Game Over...")
 	queue_free()
-	get_tree().change_scene_to_file(scene_path)
+	print("  3. Recargando escena...")
 	get_tree().reload_current_scene()
+	print("  4. Escena recargada!")
 
 func _on_quit_pressed():
-	print("Quit button pressed!")
+	print("🚪 QUIT BUTTON CLICKED!")
+	print("  1. Despausando juego...")
 	get_tree().paused = false
+	print("  2. Cerrando juego...")
 	get_tree().quit()
+	print("  3. Juego cerrado!")
