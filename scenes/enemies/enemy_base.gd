@@ -6,11 +6,13 @@ extends CharacterBody2D
 @export var max_health: int = 100
 @export var speed: float = 120.0
 @export var damage: int = 10 # Daño que inflige este enemigo (para futuros ataques)
+@export var xp_value: int = 10 # XP que otorga al morir
 
 var current_health: int
 var player: Node2D
 var health_bar: Node2D  # Barra de vida del enemigo
 var is_dying: bool = false # ¡Nueva variable para controlar el estado!
+var xp_orb_scene = preload("res://scenes/projectiles/xp_orb.tscn")
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -18,13 +20,14 @@ func _ready():
 	# Inicializa la vida actual al máximo al inicio
 	current_health = max_health
 	player = get_tree().get_first_node_in_group("player")
+	
 	if animated_sprite != null:
 		animated_sprite.play("idle")
 	
 	# Crear barra de vida
 	create_health_bar()
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	# NO hacer nada si está muriendo
 	if is_dying:
 		return
@@ -80,6 +83,13 @@ func die():
 	# Notificar al jugador sobre el kill
 	if player and player.has_method("add_kill"):
 		player.add_kill()
+	
+	# Spawn XP Orb
+	if xp_orb_scene:
+		var orb = xp_orb_scene.instantiate()
+		orb.global_position = global_position
+		orb.xp_amount = xp_value
+		get_parent().call_deferred("add_child", orb)
 	
 	# 1. Deshabilitar colisiones y movimiento
 	set_collision_mask_value(1, false) 

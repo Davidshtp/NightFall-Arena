@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d4ivtsus32bo2"]
+[gd_scene load_steps=16 format=3 uid="uid://d4ivtsus32bo2"]
 
 [ext_resource type="Texture2D" uid="uid://dqpuuuev6lqtj" path="res://assets/tileset/dark_times_tileset.png" id="1_18nlu"]
 [ext_resource type="PackedScene" uid="uid://disvu4xntu085" path="res://scenes/enemies/WarriorBoss.tscn" id="1_rt2n2"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://dkgsn547cknnt" path="res://scenes/enemies/GoldenSkeleton.tscn" id="5_c16ls"]
 [ext_resource type="PackedScene" uid="uid://53vtnbo0800w" path="res://scenes/enemies/WhiteSkeleton.tscn" id="6_18nlu"]
 [ext_resource type="PackedScene" uid="uid://c8vx7qm2yjwkd" path="res://scenes/ui/HUD.tscn" id="9_c1pb6"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="10_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/UpgradeCards.tscn" id="11_upgrade"]
+[ext_resource type="PackedScene" path="res://scenes/AudioManager.tscn" id="12_audio"]
+[ext_resource type="AudioStream" uid="uid://dj180khxsc4f2" path="res://assets/Jasmine and Rose.mp3" id="13_4w45t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c1pb6"]
 texture = ExtResource("1_18nlu")
@@ -98,5 +102,12 @@ wait_time = 2.0
 autostart = true
 
 [node name="HUD" parent="." instance=ExtResource("9_c1pb6")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("10_pause")]
+
+[node name="UpgradeCards" parent="." instance=ExtResource("11_upgrade")]
+
+[node name="AudioManager" parent="." instance=ExtResource("12_audio")]
+music_stream = ExtResource("13_4w45t")
 
 [connection signal="timeout" from="EnemySpawner/SpawnTimer" to="EnemySpawner" method="_on_spawn_timer_timeout"]

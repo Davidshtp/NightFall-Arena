@@ -71,7 +71,7 @@ func update_stats():
 		return
 	
 	var time_int = int(survival_time)
-	var minutes = time_int / 60
+	var minutes = int(time_int / 60.0)
 	var seconds = time_int % 60
 	survival_time_label.text = "Tiempo sobrevivido: %d:%02d" % [minutes, seconds]
 	kills_label.text = "Enemigos eliminados: %d" % total_kills

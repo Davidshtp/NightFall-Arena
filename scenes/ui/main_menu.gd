@@ -22,4 +22,3 @@ func _on_play_pressed():
 func _on_quit_pressed():
 	print("🚪 Botón Salir presionado - Cerrando juego...")
 	get_tree().quit()
-
