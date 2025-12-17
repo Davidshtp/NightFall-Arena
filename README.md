@@ -111,17 +111,15 @@ Hurtbox:    layer=2, mask=4 (detecta enemigos para daño)
 
 ---
 
-## 🔜 Pendientes (15%)
-
-### UI/HUD
-- ❌ Menú principal
-- ❌ Menú de pausa
+### Estado
+- ✅ Menú principal — completado
+- ✅ Menú de pausa — completado
 
 ### Sistemas Avanzados
-- ❌ Sistema de XP y niveles
-- ❌ Sistema de mejoras/power-ups
-- ❌ Sistema de oleadas definidas
-- ❌ Sistema de audio (música + SFX)
+- ✅ Sistema de XP y niveles — implementado
+- ✅ Sistema de mejoras / power-ups — implementado
+- ✅ Sistema de oleadas definidas — implementado
+- ✅ Sistema de audio (música + SFX) — implementado (música, SFX e integración de Game Over)
 
 ---
 
@@ -250,33 +248,28 @@ ENEMIES:
 
 ## 📝 Changelog
 
-### Última Actualización: 15/12/2025
+**Funcionalidades Nuevas (desde la última versión):**
+- ✅ **Sistema de XP y Niveles:** el jugador acumula XP, sube niveles y puede desbloquear mejoras.
+- ✅ **Sistema de Upgrades:** cartas/mejoras que modifican estadísticas del jugador entre partidas.
+- ✅ **Audio reestructurado:** `AudioManager` centralizado, música de fondo y SFX estables.
+  - Música de fondo: `res://assets/Jasmine and Rose.mp3`.
+  - SFX impact: `res://assets/sfx/enemies/damage-blowhole-402072.mp3`.
+  - Game Over: sonido + voz sobrepuesta (ambos configurados para no pausarse al mostrar la pantalla).
+- ✅ **Mejoras en Game Over:** al morir se detiene la música y se reproducen Game Over + voz (no se interrumpen al pausar la escena).
+- ✅ **Corrección/Remoción temporal:** se eliminó el SFX de disparo (motivo: incompatibilidades anteriores de formato/mezcla). Se puede reintroducir con conversión y pruebas.
 
-**Funcionalidades Nuevas:**
-- ✅ **Sistema de HUD completo:**
-  - HP del jugador (texto)
-  - Contador de Kills
-  - Timer de supervivencia
-- ✅ **Barras de vida flotantes:**
-  - Barra de vida del jugador encima del personaje
-  - Barras de vida para todos los enemigos
-- ✅ **Pantalla de Game Over:**
-  - Botón Retry para reiniciar
-  - Botón Quit para salir
-- ✅ Twin-stick shooter (disparo con mouse)
-- ✅ Mapa con tileset completo
-- ✅ Balanceo completo de 4 enemigos
-- ✅ Hitboxes calibradas manualmente
-- ✅ Sistema de colisiones optimizado
-- ✅ Proyectil visual mejorado (gradiente de fuego)
-- ✅ Cámara con zoom apropiado
+**Funcionalidades mantenidas / existentes:**
+- ✅ HUD completo (HP, Kills, Time)
+- ✅ Barras de vida flotantes para jugador y enemigos
+- ✅ Pantalla de Game Over con Retry/Quit
+- ✅ Twin-stick shooter, mapa, balanceo y animaciones
 
-**Correcciones:**
-- ✅ Animaciones de muerte funcionando correctamente
-- ✅ Enemigos no se empujan entre sí
-- ✅ Player inmune a sus proyectiles
-- ✅ Duración de animación de muerte boss (1.5s)
-- ✅ Botones de Game Over funcionando correctamente
+**Correcciones y notas técnicas:**
+- ✅ Ajustes en animaciones de muerte y colisiones
+- ✅ Reproductores SFX usan `process_mode = Node.PROCESS_MODE_ALWAYS` para evitar pausa durante pantallas UI críticas
+- ⚠️ Recomendación: mantener Godot v4.5.1 para evitar incompatibilidades con código y audio usado en el proyecto
+
+Si quieres, puedo añadir una sección de créditos detallada con autores y enlaces por cada recurso externo (música, SFX y sprites). Proporcióname los nombres o URLs y los incorporo.
 
 ---
 
@@ -288,4 +281,3 @@ Assets de terceros sujetos a sus respectivas licencias (ver créditos).
 ---
 
 **Desarrollado con ❤️ en Godot 4**  
-**Estado del Parcial: APROBABLE ✅**
