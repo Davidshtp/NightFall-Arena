@@ -24,5 +24,10 @@ func _on_body_entered(body):
 		# Llamamos a take_damage y le pasamos la cantidad de daño
 		body.take_damage(damage_amount)
 		
+		# Sonido de impacto
+		var audio = get_tree().get_first_node_in_group("audio_manager")
+		if audio and audio.has_method("play_hit"):
+			audio.play_hit()
+		
 		# Eliminamos la bala de la escena (solo puede golpear una vez)
 		queue_free()

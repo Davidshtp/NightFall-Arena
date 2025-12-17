@@ -62,6 +62,7 @@ func _ready():
 	# Buscar el HUD después de que todos los nodos estén listos
 	call_deferred("find_hud")
 	call_deferred("find_upgrade_cards")
+	call_deferred("_start_music")
 
 func find_hud():
 	hud = get_tree().get_first_node_in_group("hud")
@@ -83,6 +84,12 @@ func find_upgrade_cards():
 			upgrade_cards.upgrade_selected.connect(_on_upgrade_selected)
 	else:
 		print("⚠️ UpgradeCards no encontrado, se buscará más tarde")
+
+func _start_music():
+	var audio_manager = get_tree().get_first_node_in_group("audio_manager")
+	if audio_manager and audio_manager.has_method("start_battle_music"):
+		audio_manager.start_battle_music()
+		print("🎵 Música de fondo iniciada")
 
 func _process(delta):
 	if not is_dead:
@@ -218,6 +225,14 @@ func die():
 	
 	is_dead = true
 	print("Player died! Showing Game Over...")
+	
+	# Detener música y reproducir Game Over
+	var audio = get_tree().get_first_node_in_group("audio_manager")
+	if audio:
+		if audio.has_method("stop_music"):
+			audio.stop_music()
+		if audio.has_method("play_game_over"):
+			audio.play_game_over()
 	
 	velocity = Vector2.ZERO
 	set_physics_process(false)
